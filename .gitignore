@@ -1,0 +1,23 @@
+# Godot editor-generated files
+.godot/
+*.tmp
+
+# Third-party art packs: obtain these from their authors and keep them local.
+/assets/enemies/
+/assets/heroes/shadow/
+/assets/effects/blood/
+/assets/effects/fire/
+
+# Local exports and signing credentials
+/itch_build/
+/android_build/
+*.apk
+*.aab
+*.keystore
+*.jks
+*.p12
+
+# Windows/macOS metadata
+Thumbs.db
+Desktop.ini
+.DS_Store

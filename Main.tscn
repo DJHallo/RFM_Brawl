@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dapfnhhb0oosy"]
+
+[ext_resource type="Script" uid="uid://dmm5h07q2mia8" path="res://main.gd" id="1"]
+
+[node name="RFMBrawl" type="Node2D" unique_id=425584844]
+script = ExtResource("1")
