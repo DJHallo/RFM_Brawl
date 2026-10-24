@@ -1,0 +1,63 @@
+name: Build Android APK
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Package game for Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platforms;android-35 build-tools;35.0.0'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.9'
+
+      - name: Download the web game attached to this release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          mkdir -p android_wrapper/app/src/main/assets/game
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'RFM-Brawl-Castle-Arena-itch-html.zip' \
+            --dir /tmp/rfm-game
+          unzip -q /tmp/rfm-game/RFM-Brawl-Castle-Arena-itch-html.zip \
+            -d android_wrapper/app/src/main/assets/game
+          test -f android_wrapper/app/src/main/assets/game/index.html
+
+      - name: Build installable debug APK
+        working-directory: android_wrapper
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          VERSION_NAME: ${{ github.event.release.tag_name }}
+        run: gradle --no-daemon :app:assembleDebug
+
+      - name: Attach APK to the same GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            android_wrapper/app/build/outputs/apk/debug/app-debug.apk#RFM-Brawl-Castle-Arena-Android.apk \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber

@@ -11,6 +11,10 @@
 # Local exports and signing credentials
 /itch_build/
 /android_build/
+/.gradle/
+/android_wrapper/.gradle/
+/android_wrapper/app/build/
+/android_wrapper/local.properties
 *.apk
 *.aab
 *.keystore

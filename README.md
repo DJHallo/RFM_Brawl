@@ -12,6 +12,17 @@ Repozytorium pomija surowe pliki zewnętrznych paczek graficznych ze względu na
 
 Szczegółowe źródła, warunki i autorzy assetów są w [ASSET_LICENSES.md](ASSET_LICENSES.md). Projekt nie ma jeszcze wybranej licencji open source dla kodu.
 
+## APK na GitHub Releases
+
+Workflow `.github/workflows/build-android-apk.yml` tworzy instalowalny APK po opublikowaniu nowego GitHub Release. To lekki wrapper Android WebView zawierający eksport webowy gry, nie natywny eksport Godota. Działa offline po instalacji; wydajność zależy od WebView i urządzenia. APK ma podpis debug, więc można go instalować ręcznie, ale nie jest gotowy do Google Play.
+
+1. Utwórz szkic Release w GitHubie.
+2. Dodaj asset `RFM-Brawl-Castle-Arena-itch-html.zip` z eksportem webowym.
+3. Opublikuj Release.
+4. GitHub Actions dobuduje i dołączy `RFM-Brawl-Castle-Arena-Android.apk` do tego Release.
+
+Workflow pobiera gotowy eksport gry z Release, więc nie potrzebuje surowych plików paczek graficznych w repozytorium.
+
 ## Menu
 
 - **Start Game** otwiera wybór bohatera, a potem wybór Stage Mode albo Survival Mode.
