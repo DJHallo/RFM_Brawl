@@ -37,4 +37,12 @@ jobs:
       - name: Build Android wrapper
         working-directory: android_wrapper
         run: gradle --no-daemon :app:assembleDebug
-        
+       
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: RFM-Brawl-APK
+          path: android_wrapper/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
+          
